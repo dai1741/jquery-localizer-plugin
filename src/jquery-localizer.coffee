@@ -40,4 +40,8 @@
       @setLang lang
       
       $
+  
+  $.extend
+    localizer: new Localizer()
+  
 )(jQuery)
