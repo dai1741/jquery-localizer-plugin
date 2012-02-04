@@ -9,11 +9,18 @@
     constructor: () ->
       @dics = {}
     
+    # this will request "#{@opts.langPath}/#{@lang}.json"
     setLang: (lang) =>
-      null
+      @lang = lang
+      unless @dics[@lang]?
+        $.getJson "#{@opts.langPath}/#{@lang}.json", (dic) ->
+          @dics[@lang] = dic
+      
+      # @dics[@lang]
+      $
     
-    get: (key) ->
-      null
+    get: (key) =>
+      @dics[@lang][key]
     
     init: (opts) =>
       @opts = $.extend(defOpts, opts)
@@ -32,5 +39,5 @@
       
       @setLang lang
       
-      null
+      $
 )(jQuery)
