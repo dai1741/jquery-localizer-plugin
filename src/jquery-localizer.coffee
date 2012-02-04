@@ -1,7 +1,7 @@
 (($) ->
   
   defOpts =
-    langPath: '/'
+    langPath: './'
     lang: 'auto'
     acceptableLangs: ['en', 'de', 'ja']
   
@@ -13,19 +13,24 @@
     setLang: (lang) =>
       @lang = lang
       unless @dics[@lang]?
-        $.getJson "#{@opts.langPath}/#{@lang}.json", (dic) ->
-          @dics[@lang] = dic
+        $.ajax
+          url: "#{@opts.langPath}/#{@lang}.json"
+          success: (dic) =>
+            @dics[@lang] = dic
+            null
+          error: (req, st) ->
+            # hmmmm
       
       # @dics[@lang]
       $
     
     get: (key) =>
-      @dics[@lang][key]
+      @dics[@lang]?[key]
     
     init: (opts) =>
       @opts = $.extend(defOpts, opts)
       lang =
-        if opts.lang is 'auto'
+        if @opts.lang is 'auto'
           navLang = navigator.language ? navigator.browserLanguage
           if navLang? and navLang isnt ''
             (l for l in @opts.acceptableLangs when l is navLang)?[0] ?
