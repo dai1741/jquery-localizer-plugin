@@ -89,10 +89,16 @@
         me.text(@dic[key] ? '')  # if key?
         null
   
-  $.fn.localize = (arg) ->
+  $.fn.localize = (arg, arg2) ->
     if $.type(arg) is 'string'
-      # arg represents a key of the cached dictionary
-      @eq(0)?.data('localizerCache')?.get(arg)
+      if arg2?
+        # args represent single pair of key/value
+        opt = {}
+        opt[arg] = arg2
+        arguments.callee.call(@, opt)
+      else
+        # arg represents a key of the cached dictionary
+        @eq(0)?.data('localizerCache')?.get(arg)
     else
       # arg probably represents options object
       @each () ->
