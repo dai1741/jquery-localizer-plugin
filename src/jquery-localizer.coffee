@@ -4,6 +4,7 @@
     langPath: './'
     lang: 'auto'
     acceptableLangs: ['en', 'de', 'ja']
+    classPrefix: 'localize-'
     reuseDics: yes
   
   class DicLoader
@@ -66,7 +67,17 @@
       
       @setLang lang
       
+      @updateDOM
+      
       $
+    
+    updateDOM: () =>
+      @elm.find("*[class=^#{@opts.classPrefix}]").each () ->
+        me = $(@)
+        key = (cl for cl in me.attr('class').split(/\s+/) when cl.
+          indexOf(@opts.classPrefix))[0]?.slice @opts.classPrefix.length
+        me.text(dic[key] ? '')  # if key?
+        null
   
   $.fn.localize = (opts) =>
     @each () ->
