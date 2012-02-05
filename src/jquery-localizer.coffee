@@ -11,17 +11,23 @@
     constructor: () ->
       @dics = {}
     
-    loadDic: (langPath, lang) =>
+    loadDic: (langPath, lang, onload) =>
       $.ajax
         url: "#{langPath}/#{lang}.json"
+        dataType: 'json'
         success: (dic) =>
           @dics[lang] = dic
         error: (req, st) ->
           # hmmmm
-      @dics[lang]
+        complete: () ->
+          onload()
     
-    getOrLoadDic: (langPath, lang) =>
-      @dics[lang] ? @loadDic langPath, lang
+    getOrLoadDic: (langPath, lang, onload) =>
+      if @dics[lang]? 
+        onload()
+        @dics[lang]
+      else
+        @loadDic langPath, lang
     
     hasDic: (lang) =>
       @dics[lang]?
@@ -31,12 +37,12 @@
   class Localizer
     
     # this will request "#{@opts.langPath}/#{@lang}.json"
-    setLangAndLoadDic: (lang) =>
+    setLangAndLoadDic: (lang, onload) =>
       @lang = lang
       @dic = (if @opts.reuseDic
           dicLoader.getOrLoadDic
         else
-          dicLoader.loadDic)(@opts.langPath, @lang)
+          dicLoader.loadDic)(@opts.langPath, @lang, onload)
       
       $
     
@@ -65,9 +71,8 @@
       lang = @opts.acceptableLangs[0] unless lang in @opts.acceptableLangs
       # throw 'unsupported language'
       
-      @setLangAndLoadDic lang
-      
-      @updateDOM()
+      @setLangAndLoadDic lang, () =>
+        @updateDOM()
       
       $
     
