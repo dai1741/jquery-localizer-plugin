@@ -26,8 +26,14 @@
     
     get: (key) =>
       @dics[@lang]?[key]
+      
+    getLastCachedDic: () =>
+      @dics[@lang]
+      
+    getCachedDics: () =>
+      @dics
     
-    init: (opts) =>
+    init: (elm, opts) =>
       @opts = $.extend(defOpts, opts)
       lang =
         if @opts.lang is 'auto'
