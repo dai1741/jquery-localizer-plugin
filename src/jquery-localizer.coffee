@@ -6,6 +6,9 @@
     acceptableLangs: ['en', 'de', 'ja']
     classPrefix: 'localize-'
     reuseDics: yes
+    success: $.noop
+    error: $.noop
+    complete: $.noop
   
   class DicLoader
     constructor: () ->
@@ -69,6 +72,14 @@
       
       @setLangAndLoadDic lang, () =>
         @updateDOM()
+        if @dic?
+          @opts.success?()
+          @elm.trigger('localizesuccess')
+        else
+          @opts.error?()
+          @elm.trigger('localizeerror')
+        @opts.complete?()
+        @elm.trigger('localizecomplete')
     
     updateDOM: () =>
       @elm.find("*[class^=#{@opts.classPrefix}]").each (i, e) =>
