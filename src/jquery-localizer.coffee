@@ -17,10 +17,11 @@
         dataType: 'json'
         success: (dic) =>
           @dics[lang] = dic
+          null
         error: (req, st) ->
           # hmmmm
-        complete: () ->
-          onload()
+        complete: () =>
+          onload(@dics[lang])
     
     getOrLoadDic: (langPath, lang, onload) =>
       if @dics[lang]? 
@@ -39,10 +40,13 @@
     # this will request "#{@opts.langPath}/#{@lang}.json"
     setLangAndLoadDic: (lang, onload) =>
       @lang = lang
-      @dic = (if @opts.reuseDic
+      (if @opts.reuseDic
           dicLoader.getOrLoadDic
         else
-          dicLoader.loadDic)(@opts.langPath, @lang, onload)
+          dicLoader.loadDic)(@opts.langPath, @lang, (dic) =>
+            @dic = dic
+            onload()
+        )
       
       $
     
@@ -80,7 +84,7 @@
       @elm.find("*[class^=#{@opts.classPrefix}]").each (i, e) =>
         me = $(e)
         key = (cl for cl in me.attr('class').split(/\s+/) when cl.
-          indexOf(@opts.classPrefix))[0]?.slice @opts.classPrefix.length
+          indexOf(@opts.classPrefix) == 0)[0]?.slice @opts.classPrefix.length
         me.text(@dic[key] ? '')  # if key?
         null
   
