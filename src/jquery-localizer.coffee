@@ -78,14 +78,19 @@
         me.text(@dic[key] ? '')  # if key?
         null
   
-  $.fn.localize = (opts) ->
-    @each () ->
-      me = $(@)
-      cache = me.data('localizerCache')
-      if cache?
-        cache.update(opts)
-      else
-        me.data('localizerCache', new Localizer(me, opts))
-      null
+  $.fn.localize = (arg) ->
+    if $.type(arg) is 'string'
+      # arg represents a key of the cached dictionary
+      @eq(0)?.data('localizerCache')?.get(arg)
+    else
+      # arg probably represents options object
+      @each () ->
+        me = $(@)
+        cache = me.data('localizerCache')
+        if cache?
+          cache.update(arg)
+        else
+          me.data('localizerCache', new Localizer(me, arg))
+        null
   
 )(jQuery)
