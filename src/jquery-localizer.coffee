@@ -4,6 +4,25 @@
     langPath: './'
     lang: 'auto'
     acceptableLangs: ['en', 'de', 'ja']
+    reuseDics: yes
+  
+  class DicLoader
+    constructor: () ->
+      @dics = {}
+    
+    loadDic: (langPath, lang, suc) =>
+      $.ajax
+        url: "#{langPath}/#{lang}.json"
+        success: (dic) =>
+          @dics[lang] = dic
+        error: (req, st) ->
+          # hmmmm
+    
+    getOrLoadDic: (langPath, lang) =>
+      @dics[lang] ? loadDic langPath, lang
+    
+    hasDic: (lang) =>
+      @dics[lang]?
   
   class Localizer
     constructor: () ->
@@ -53,6 +72,6 @@
       $
   
   $.extend
-    localizer: new Localizer()
+    _localizerDicLoader: new DicLoader()
   
 )(jQuery)
