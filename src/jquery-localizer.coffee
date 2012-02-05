@@ -18,6 +18,7 @@
           @dics[lang] = dic
         error: (req, st) ->
           # hmmmm
+      @dics[lang]
     
     getOrLoadDic: (langPath, lang) =>
       @dics[lang] ? @loadDic langPath, lang
@@ -37,7 +38,6 @@
         else
           dicLoader.loadDic)(@opts.langPath, @lang)
       
-      # @dics[@lang]
       $
     
     get: (key) =>
@@ -46,7 +46,7 @@
     getLang: () =>
       @lang
     
-    constructor: (@elm) ->
+    constructor: (@elm, opts) ->
       @opts = $.extend(defOpts, opts)
       @update @opts
     
@@ -65,21 +65,21 @@
       lang = @opts.acceptableLangs[0] unless lang in @opts.acceptableLangs
       # throw 'unsupported language'
       
-      @setLang lang
+      @setLangAndLoadDic lang
       
-      @updateDOM
+      @updateDOM()
       
       $
     
     updateDOM: () =>
-      @elm.find("*[class=^#{@opts.classPrefix}]").each () ->
-        me = $(@)
+      @elm.find("*[class^=#{@opts.classPrefix}]").each (i, e) =>
+        me = $(e)
         key = (cl for cl in me.attr('class').split(/\s+/) when cl.
           indexOf(@opts.classPrefix))[0]?.slice @opts.classPrefix.length
-        me.text(dic[key] ? '')  # if key?
+        me.text(@dic[key] ? '')  # if key?
         null
   
-  $.fn.localize = (opts) =>
+  $.fn.localize = (opts) ->
     @each () ->
       me = $(@)
       cache = me.data('localizerCache')
