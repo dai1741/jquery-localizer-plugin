@@ -29,15 +29,15 @@
         @dics[lang]
       else
         @loadDic langPath, lang
-    
-    hasDic: (lang) =>
-      @dics[lang]?
   
   dicLoader = new DicLoader()
   
   class Localizer
     
-    # this will request "#{@opts.langPath}/#{@lang}.json"
+    constructor: (@elm, opts) ->
+      @opts = $.extend(defOpts, opts)
+      @update @opts
+    
     setLangAndLoadDic: (lang, onload) =>
       @lang = lang
       (if @opts.reuseDic
@@ -47,18 +47,12 @@
             @dic = dic
             onload()
         )
-      
-      $
     
     get: (key) =>
       @dic?[key]
     
     getLang: () =>
       @lang
-    
-    constructor: (@elm, opts) ->
-      @opts = $.extend(defOpts, opts)
-      @update @opts
     
     update: (opts) =>
       @opts = $.extend(@opts, opts)
@@ -68,17 +62,13 @@
           if navLang? and navLang isnt ''
             (l for l in @opts.acceptableLangs when l is navLang)?[0] ?
             (l for l in @opts.acceptableLangs when l.indexOf(navLang) == 0)?[0]
-          else null
         else
           @opts.lang
       
       lang = @opts.acceptableLangs[0] unless lang in @opts.acceptableLangs
-      # throw 'unsupported language'
       
       @setLangAndLoadDic lang, () =>
         @updateDOM()
-      
-      $
     
     updateDOM: () =>
       @elm.find("*[class^=#{@opts.classPrefix}]").each (i, e) =>
