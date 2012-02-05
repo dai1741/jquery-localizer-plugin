@@ -4,31 +4,53 @@
     langPath: './'
     lang: 'auto'
     acceptableLangs: ['en', 'de', 'ja']
+    reuseDics: yes
   
-  class Localizer
+  class DicLoader
     constructor: () ->
       @dics = {}
     
+    loadDic: (langPath, lang) =>
+      $.ajax
+        url: "#{langPath}/#{lang}.json"
+        success: (dic) =>
+          @dics[lang] = dic
+        error: (req, st) ->
+          # hmmmm
+    
+    getOrLoadDic: (langPath, lang) =>
+      @dics[lang] ? @loadDic langPath, lang
+    
+    hasDic: (lang) =>
+      @dics[lang]?
+  
+  dicLoader = new DicLoader()
+  
+  class Localizer
+    
     # this will request "#{@opts.langPath}/#{@lang}.json"
-    setLang: (lang) =>
+    setLangAndLoadDic: (lang) =>
       @lang = lang
-      unless @dics[@lang]?
-        $.ajax
-          url: "#{@opts.langPath}/#{@lang}.json"
-          success: (dic) =>
-            @dics[@lang] = dic
-            null
-          error: (req, st) ->
-            # hmmmm
+      @dic = (if @opts.reuseDic
+          dicLoader.getOrLoadDic
+        else
+          dicLoader.loadDic)(@opts.langPath, @lang)
       
       # @dics[@lang]
       $
     
     get: (key) =>
-      @dics[@lang]?[key]
+      @dic?[key]
     
-    init: (opts) =>
+    getLang: () =>
+      @lang
+    
+    constructor: (@elm) ->
       @opts = $.extend(defOpts, opts)
+      @update @opts
+    
+    update: (opts) =>
+      @opts = $.extend(@opts, opts)
       lang =
         if @opts.lang is 'auto'
           navLang = navigator.language ? navigator.browserLanguage
@@ -46,7 +68,14 @@
       
       $
   
-  $.extend
-    localizer: new Localizer()
+  $.fn.localize = (opts) =>
+    @each () ->
+      me = $(@)
+      cache = me.data('localizerCache')
+      if cache?
+        cache.update(opts)
+      else
+        me.data('localizerCache', new Localizer(me, opts))
+      null
   
 )(jQuery)
