@@ -10,7 +10,7 @@ jQuery Localizer Plugin
 
     $('body').localize();
 
-具体的には次のようにすると、`div.localize-key`の中身が*値*または*Value*となる。
+具体的には次のようにすると、`div.localize-key`の中身が *値* または *Value* となる。
 
 test.html:
 
