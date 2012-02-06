@@ -1,7 +1,8 @@
 jQuery Localizer Plugin
 ========================
 
-とてもシンプルな多言語切り替えプラグイン。
+とてもシンプルな多言語切り替えプラグイン。  
+高度な用途では[jQuery UI Globalize](https://github.com/jquery/globalize)を使ったほうが便利だと思います。
 
 使い方
 ------
@@ -72,7 +73,18 @@ Defaults:
         complete: $.noop
     });
 
+ビルド
+------
 
+プロジェクトのルートディレクトリで、以下のコマンドを入力してください。
+
+    cake compile
+
+ビルドには以下のコマンドを実行できる環境が必要です。
+
+* node
+* coffee
+* uglifyjs
 
 License
 -------
