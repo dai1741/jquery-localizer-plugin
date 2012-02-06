@@ -57,6 +57,9 @@
     getLang: () =>
       @lang
     
+    set: (key, value) =>
+      @dic?[key] = value
+    
     update: (opts) =>
       @opts = $.extend(@opts, opts)
       lang =
@@ -92,11 +95,19 @@
   $.fn.localize = (arg, arg2) ->
     if $.type(arg) is 'string'
       if arg2?
-        # args represent single pair of key/value
-        opt = {}
-        opt[arg] = arg2
-        arguments.callee.call(@, opt)
+        if defOpts[arg]?
+          # args represent single pair of key/value
+          opt = {}
+          opt[arg] = arg2
+          arguments.callee.call(@, opt)
+        else
+          # args represent key/value of current dictionary
+          
+          # throw 'arg2 must be string' if $.type(arg2) isnt 'string'
+          @each () ->
+            $(@).data('localizerCache')?.set(arg, arg2)
       else
+        # get localized value
         # arg represents a key of the cached dictionary
         @eq(0)?.data('localizerCache')?.get(arg)
     else
