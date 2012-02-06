@@ -1,0 +1,11 @@
+{
+	"desc": "A very simple jQuery plugin to localize pages.",
+	"auto": "Auto-detect",
+	"demo": "Demo",
+	"greeting": "Greeting",
+	"hello": "Hello.",
+	"bye": "Bye.",
+	"sampleCode": "Sample code",
+	"download": "Download",
+	"forkMe": "Fork me on GitHub!"
+}

@@ -1,0 +1,11 @@
+{
+	"desc": "Ein jQuery-Plugin zu lokalisieren Seiten.",
+	"auto": "Automatische Erkennung",
+	"demo": "Demo",
+	"greeting": "Gruß",
+	"hello": "Hallo.",
+	"bye": "Tschüss.",
+	"sampleCode": "Beispielcode",
+	"download": "Download",
+	"forkMe": "Fork mich auf GitHub!"
+}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>jQuery Localizer Plugin</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js">
+</script>
+<script src="jquery-localizer.min.js">
+</script>
+<script>
+$(document).ready(function() {
+	
+	var updateLang = function() {
+		$('body').localize({
+			'lang': $('input[name=language]:radio:checked').val(),
+			acceptableLangs: ['ja', 'en', 'de']
+		});
+	};
+	$('input[name=language]').change(updateLang);
+	updateLang();
+});
+</script>
+<style>
+body {
+    padding: 0 1em 3em;
+	line-height: 1.3;
+}
+h2, h3, h4 {
+    margin: 2em 0 .5em;
+}
+</style>
+</head>
+<body>
+<article class="content">
+	<h2>jQuery Localizer Plugin</h2>
+	<p class="localize-desc">
+	</p>
+	<h3 class="localize-demo">デモ</h3>
+	<label>
+		<input type="radio" name="language" value="auto" checked/>
+		<span class="localize-auto">自動判定</span>
+	</label>
+	<label>
+		<input type="radio" name="language" value="ja"/>
+		日本語
+	</label>
+	<label>
+		<input type="radio" name="language" value="en" />
+		English
+	</label>
+	<label>
+		<input type="radio" name="language" value="de" />
+		Deutsch
+	</label>
+	
+	<h4 class="localize-greeting"></h4>
+	<p><span class="localize-hello"></span> <span class="localize-bye"></span></p>
+	
+	
+	
+	<h3 class="localize-sampleCode">サンプルコード</h3>
+	<h4>test.html</h4>
+	<pre>
+&lt;script&gt;
+$(document).ready(function() {
+    $('body').localize({
+        acceptableLangs: ['ja', 'en']
+    });
+});
+&lt;/script&gt;
+
+&lt;div class="localize-key"&gt;&lt;/div&gt;</pre>
+	<h4>ja.json</h4>
+	<pre>
+{
+	"key": "値"
+}</pre>
+	<h4>en.json</h4>
+	<pre>
+{
+	"key": "Value"
+}</pre>
+
+	<h3 class="localize-download">ダウンロード</h3>
+	<p><a href="https://github.com/dai1741/jquery-localizer-plugin/zipball/master">ZIP</a></p>
+	<p><a class="localize-forkMe" href="https://github.com/dai1741/jquery-localizer-plugin">Fork me on GitHub!</a></p>
+	
+</article>
+</body>
+</html>

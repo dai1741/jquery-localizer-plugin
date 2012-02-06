@@ -1,0 +1,11 @@
+{
+	"desc": "シンプルな多言語対応jQueryプラグイン。",
+	"auto": "自動判定",
+	"demo": "デモ",
+	"greeting": "あいさつ",
+	"hello": "こんにちは。",
+	"bye": "さよなら。",
+	"sampleCode": "サンプルコード",
+	"download": "ダウンロード",
+	"forkMe": "GitHubからフォークできます!"
+}
