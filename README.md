@@ -85,8 +85,3 @@ Defaults:
 * node
 * coffee
 * uglifyjs
-
-License
--------
-
-MIT license
